@@ -1,5 +1,5 @@
 export const AppRoutes = {
-  ROOT: `/`,
+  ROOT: `/antitreningi_test`,
   CART: `/cart`,
   SIGN_IN: `/sign-in`,
 };
