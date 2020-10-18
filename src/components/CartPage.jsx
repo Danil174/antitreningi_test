@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import Category from './Category';
+import ProductsList from './ProductsList';
 
 const checkStatus = (response) => {
-  console.log(response);
   if (response.status >= 200 && response.status < 300) {
     return response;
   } else {
@@ -15,7 +15,6 @@ const fetchData = (endpoint, method = 'GET', auth = null, body = null, headers =
   if (auth) {
     headers.append(`Authorization`, auth);
   }
-  headers.append('mode', 'no-cors');
   headers.append('Content-Type', 'application/json');
 
   return fetch(endpoint, { method, body, headers })
@@ -25,7 +24,7 @@ const fetchData = (endpoint, method = 'GET', auth = null, body = null, headers =
 };
 
 const fetchGoods = async (auth) => {
-  const goods = await fetchData(`http://tranquil-fortress-33065.herokuapp.com/api/goods`, 'GET', auth);
+  const goods = await fetchData(`api/goods`, 'GET', auth);
   return goods;
 };
 
@@ -33,7 +32,7 @@ const authentication = async () => {
   const body = JSON.stringify({
     email: 'test',
   });
-  const auth = await fetchData(`http://tranquil-fortress-33065.herokuapp.com/api/login`, 'POST', null, body);
+  const auth = await fetchData(`api/login`, 'POST', null, body);
   return auth;
 };
 
@@ -60,12 +59,7 @@ const CartPage = () => {
     <>
       <h2>Покупки</h2>
       <Category />
-      <ul>
-        <li>Молоко</li>
-        <li>Сыр</li>
-        <li>Бананы</li>
-        <li>Мыло</li>
-      </ul>
+      <ProductsList products={products} />
       <button
         onClick={handleClick}
       >
