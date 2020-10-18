@@ -44,6 +44,11 @@ module.exports = {
     port: 4200,
     hot: isDev,
     historyApiFallback: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+    }
   },
   devtool: isDev ? 'source-map' : '',
   plugins: [
@@ -92,7 +97,7 @@ module.exports = {
     minimize: isProd,
     minimizer: [
       new CssMinimizerPlugin(),
-      new TerserPlugin()
+      // new TerserPlugin()
     ],
   },
 }

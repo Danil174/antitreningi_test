@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Chip } from '@material-ui/core';
 
 const Category = () => {
@@ -9,10 +9,6 @@ const Category = () => {
   ]);
 
   const [newCategory, setNewCategory] = useState(``);
-
-  useEffect(() => {
-    console.log(chipData);
-  }, [chipData]);
 
   const handleDelete = (chipToDelete) => () => {
     setChipData((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
