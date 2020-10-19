@@ -1,14 +1,16 @@
 import React from 'react';
 import { Route, NavLink, Switch, Redirect } from "react-router-dom";
+import { inject, observer } from 'mobx-react';
 
 import MainPage from './MainPage';
 import CartPage from './CartPage';
 import SignInPage from './SignInPage';
 import PrivateRoute from './PrivateRoute';
 
-import { AppRoutes } from '../const';
+import { AppRoutes, AuthorizationStatus } from '../const';
 
-const App = () => {
+const App = inject('myStore')(observer(({ myStore }) => {
+  const isAuth = myStore.authorizationStatus === AuthorizationStatus.AUTH;
   return (
     <>
       <div>
@@ -17,12 +19,18 @@ const App = () => {
             <li className="nav__item">
               <NavLink className="nav__link" activeClassName="nav__link--active" to="/" exact>Главная</NavLink>
             </li>
-            <li className="nav__item">
-              <NavLink className="nav__link" activeClassName="nav__link--active" to="/cart">Покупки</NavLink>
-            </li>
-            <li className="nav__item">
-              <NavLink className="nav__link" activeClassName="nav__link--active" to="/sign-in">Авторизация</NavLink>
-            </li>
+            {
+              isAuth &&
+              <li className="nav__item">
+                <NavLink className="nav__link" activeClassName="nav__link--active" to="/cart">Покупки</NavLink>
+              </li>
+            }
+            {
+              !isAuth &&
+              <li className="nav__item">
+                <NavLink className="nav__link" activeClassName="nav__link--active" to="/sign-in">Авторизация</NavLink>
+              </li>
+            }
           </ul>
         </nav>
       </div>
@@ -32,7 +40,7 @@ const App = () => {
         <PrivateRoute
           exact
           path={AppRoutes.CART}
-          authorizationStatus={`AUTH`}
+          authorizationStatus={myStore.authorizationStatus}
           render={() => {
             return (
               <CartPage />
@@ -40,11 +48,15 @@ const App = () => {
           }}
         />
         <Route path={AppRoutes.CART} exact component={CartPage} />
-        <Route path={AppRoutes.SIGN_IN} exact component={SignInPage} />
+        <Route
+          path={AppRoutes.SIGN_IN}
+          exact
+          component={SignInPage}
+        />
         <Redirect to={AppRoutes.ROOT} />
       </Switch>
     </>
   );
-};
+}));
 
 export default App;
