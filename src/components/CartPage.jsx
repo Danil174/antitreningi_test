@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { Container, Grid } from '@material-ui/core';
 
 import ProductsList from './ProductsList';
-import Spinner from './Spinner';
+// import Spinner from './Spinner';
 import NewProductDialog from './NewProductDialog';
 
 const CartPage = inject('myStore')(observer((props) => {
@@ -27,10 +27,12 @@ const CartPage = inject('myStore')(observer((props) => {
         alignItems="center"
         spacing={3}
       >
-        <Grid item xs={12}>
-          <h2>Покупки</h2>
-          <ProductsList products={props.myStore.products} />
-        </Grid>
+        <h2>Покупки</h2>
+        <ProductsList
+          products={props.myStore.products}
+          deleteProduct={props.myStore.deleteProduct}
+          patchProduct={props.myStore.patchProduct}
+        />
         <Grid item xs={12}>
           <NewProductDialog />
         </Grid>

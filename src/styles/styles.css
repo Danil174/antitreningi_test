@@ -98,13 +98,20 @@ body {
 }
 
 .product_list__product {
-  min-width: 140px;
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   background-color: #c6cbe9;
   border-radius: 5px;
+
+  padding: 10px;
+  text-align: center;
+  margin: 10px !important;
+}
+
+.product_list__product span,
+.product_list__product button {
+  margin-top: 5px;
 }
 
 .product_list__product--isBought {

@@ -46,10 +46,21 @@ class cartStore {
 
     this.getToken = this.getToken.bind(this);
     this.fetchProducts = this.fetchProducts.bind(this);
+    this.deleteProduct = this.deleteProduct.bind(this);
+    this.patchProduct = this.patchProduct.bind(this);
   }
 
   updateProducts(product) {
     this.products = [ ...this.products, product ];
+  }
+
+  deleteProductInStore(id) {
+    this.products = this.products.filter(it => it.id !== id);
+  }
+
+  patchProductInStore(product) {
+    const idx = this.products.findIndex(it => it.id === product.id);
+    this.products = [...this.products.slice(0, idx), product, ...this.products.slice(idx + 1)];
   }
 
   async getToken(email, password) {
@@ -106,6 +117,34 @@ class cartStore {
       const data = await fetchData(`/api/goods`, 'POST', this.token, body);
       runInAction(() => {
         this.updateProducts(data);
+      });
+    } catch (e) {
+      runInAction(() => {
+        console.log(e);
+      });
+    }
+  }
+
+  async deleteProduct(id) {
+    const body = JSON.stringify({ id });
+    try {
+      await fetchData(`/api/goods/${id}`, 'DELETE', this.token, body);
+      runInAction(() => {
+        this.deleteProductInStore(id);
+      });
+    } catch (e) {
+      runInAction(() => {
+        console.log(e);
+      });
+    }
+  }
+
+  async patchProduct(id) {
+    const body = JSON.stringify({ id });
+    try {
+      const data = await fetchData(`/api/goods/${id}`, 'PATCH', this.token, body);
+      runInAction(() => {
+        this.patchProductInStore(data);
       });
     } catch (e) {
       runInAction(() => {

@@ -1,16 +1,15 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 
-const ProductsList = ({ products }) => {
+const ProductsList = ({ products, deleteProduct, patchProduct }) => {
 
   if (products.length === 0) {
-    return (<h3>Список пуст</h3>);
+    return <h3>Список пуст</h3>;
   }
 
   return (
     <Grid
       container
-      spacing={1}
       justify="center"
     >
       {
@@ -18,11 +17,21 @@ const ProductsList = ({ products }) => {
           const defaultClass = `product_list__product`;
           const isBoughtClass = product.isBought ? `${defaultClass} product_list__product--isBought` : defaultClass;
           return (
-            <Grid item xs={3} key={product.id} component={'article'} className={isBoughtClass} style={{'margin': '10px'}}>
+            <Grid
+              item xs={3}
+              key={product.id}
+              component={'article'}
+              className={isBoughtClass}
+            >
               <span>{product.title}</span>
               <span>Количество: {product.amount}</span>
               <span>Цена: {product.amount} руб.</span>
-              { product.isBought && <span className="isBought">Товар куплен</span> }
+              <Button onClick={() => patchProduct(product.id)} color="primary" variant="contained" disableElevation>
+                Купить
+              </Button>
+              <Button onClick={() => deleteProduct(product.id)} color="secondary" variant="contained" disableElevation>
+                Удалить
+              </Button>
             </Grid>
           );
         })
