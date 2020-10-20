@@ -125,3 +125,8 @@ body {
   background-color: #6cd583;
 }
 
+.error {
+  color: red;
+  font-weight: 700;
+}
+

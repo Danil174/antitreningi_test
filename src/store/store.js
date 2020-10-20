@@ -1,5 +1,5 @@
 import { observable, runInAction, action, makeObservable } from 'mobx';
-import { AuthorizationStatus, AppRoutes } from "../const.js";
+import { AuthorizationStatus } from "../const.js";
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
