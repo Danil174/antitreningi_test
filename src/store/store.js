@@ -1,4 +1,4 @@
-import { observable, runInAction, action, makeObservable } from 'mobx';
+import { observable, runInAction, action, makeObservable, computed } from 'mobx';
 import { AuthorizationStatus } from "../const.js";
 
 const checkStatus = (response) => {
@@ -19,6 +19,13 @@ const fetchData = (endpoint, method = 'GET', auth = null, body = null, headers =
   return fetch(endpoint, { method, body, headers })
     .then(checkStatus)
     .then((res) => res.json());
+};
+
+const costReducer = (items) => {
+  return items.reduce((acc, it) => {
+    acc = acc + it.price * it.amount;
+    return acc;
+  }, 0);
 };
 
 
@@ -42,12 +49,32 @@ class cartStore {
       getToken: action,
       fetchProducts: action,
       addproduct: action,
+      productsCost: computed,
+      boughtProductsCost: computed,
     });
 
     this.getToken = this.getToken.bind(this);
     this.fetchProducts = this.fetchProducts.bind(this);
     this.deleteProduct = this.deleteProduct.bind(this);
     this.patchProduct = this.patchProduct.bind(this);
+  }
+
+  get productsCost() {
+    return costReducer(this.products);
+  }
+
+  get boughtProductsCost() {
+    const items = this.products.slice().filter(it => it.isBought);
+    return costReducer(items);
+  }
+
+  get notBoughtProductsCost() {
+    return this.products.reduce((acc, it) => {
+      if (!it.isBought) {
+        acc = acc + it.price * it.amount;
+      }
+      return acc;
+    }, 0);
   }
 
   updateProducts(product) {

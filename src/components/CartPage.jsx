@@ -36,6 +36,10 @@ const CartPage = inject('myStore')(observer((props) => {
         <Grid item xs={12}>
           <NewProductDialog />
         </Grid>
+        <Grid item xs={12}>
+          <p>Общая стоимость корзины: {props.myStore.productsCost}</p>
+          <p>Стоимость купленных товаров: {props.myStore.boughtProductsCost}</p>
+        </Grid>
       </Grid>
     </Container>
   );
