@@ -5,6 +5,7 @@ import { Container, Grid } from '@material-ui/core';
 import ProductsList from './ProductsList';
 // import Spinner from './Spinner';
 import NewProductDialog from './NewProductDialog';
+import Filters from './Filters';
 
 const CartPage = inject('myStore')(observer((props) => {
   useEffect(() => {
@@ -28,8 +29,9 @@ const CartPage = inject('myStore')(observer((props) => {
         spacing={3}
       >
         <h2>Покупки</h2>
+        <Filters />
         <ProductsList
-          products={props.myStore.products}
+          products={props.myStore.filteredProducts}
           deleteProduct={props.myStore.deleteProduct}
           patchProduct={props.myStore.patchProduct}
         />

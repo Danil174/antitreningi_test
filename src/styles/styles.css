@@ -123,3 +123,15 @@ body {
   font-weight: 700;
 }
 
+.filters {
+  border: 2px solid #005d8f;
+  background-color: #cee3ef;
+  margin: 10px 0;
+  border-radius: 10px
+}
+
+.range {
+  width: 300px !important;
+  margin: 20px 15px;
+}
+

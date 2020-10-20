@@ -33,6 +33,7 @@ class cartStore {
   token = null;
   products = [];
   categories = [];
+  filterRange = [0, 0];
   authorizationStatus = AuthorizationStatus.NO_AUTH;
   loadError = false;
   loginError = false;
@@ -46,17 +47,33 @@ class cartStore {
       loadError: observable,
       loginError: observable,
       loadCategoriesError: observable,
+      filterRange: observable,
       getToken: action,
       fetchProducts: action,
       addproduct: action,
+      fetchCategories: action,
+      putCategories: action,
+      setFilterRangeValue: action,
       productsCost: computed,
       boughtProductsCost: computed,
+      filteredProducts: computed,
+      maxPrice: computed
     });
 
     this.getToken = this.getToken.bind(this);
     this.fetchProducts = this.fetchProducts.bind(this);
     this.deleteProduct = this.deleteProduct.bind(this);
     this.patchProduct = this.patchProduct.bind(this);
+    this.setFilterRangeValue = this.setFilterRangeValue.bind(this);
+  }
+
+  get filteredProducts() {
+    if (this.filterRange[1] === 0) {
+      return this.products;
+    }
+    return this.products
+      .slice()
+      .filter(it => this.filterRange[0] <= Number(it.price) && this.filterRange[1] >= Number(it.price));
   }
 
   get productsCost() {
@@ -75,6 +92,19 @@ class cartStore {
       }
       return acc;
     }, 0);
+  }
+
+  get maxPrice() {
+    if (this.products.length === 0) {
+      return 0;
+    }
+    const priceArr = this.products.map(it => Number(it.price));
+    const max = Math.max(...priceArr);
+    return max;
+  }
+
+  setFilterRangeValue(range) {
+    this.filterRange = range;
   }
 
   updateProducts(product) {
@@ -121,19 +151,6 @@ class cartStore {
     }
   }
 
-  async fetchCategories() {
-    try {
-      const data = await fetchData(`api/categories`, 'GET', this.token);
-      runInAction(() => {
-        this.categories = data;
-      });
-    } catch (e) {
-      runInAction(() => {
-        this.loadCategoriesError = true;
-      });
-    }
-  }
-
   async addproduct(data) {
     const serverData = {};
     for (const [key, value] of data.entries()) {
@@ -172,6 +189,34 @@ class cartStore {
       const data = await fetchData(`/api/goods/${id}`, 'PATCH', this.token, body);
       runInAction(() => {
         this.patchProductInStore(data);
+      });
+    } catch (e) {
+      runInAction(() => {
+        console.log(e);
+      });
+    }
+  }
+
+  async fetchCategories() {
+    try {
+      const data = await fetchData(`api/categories`, 'GET', this.token);
+      runInAction(() => {
+        this.categories = data;
+      });
+    } catch (e) {
+      runInAction(() => {
+        this.loadCategoriesError = true;
+      });
+    }
+  }
+
+  async putCategories(array) {
+    const body = JSON.stringify({ array });
+    try {
+      const data = await fetchData(`api/categories`, 'PUT', this.token, body);
+      runInAction(() => {
+        console.log(data);
+        // this.putProductInStore(data);
       });
     } catch (e) {
       runInAction(() => {
