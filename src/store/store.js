@@ -23,7 +23,7 @@ const fetchData = (endpoint, method = 'GET', auth = null, body = null, headers =
 
 
 class cartStore {
-  token = '';
+  token = null;
   products = [];
   authorizationStatus = AuthorizationStatus.NO_AUTH;
   loadError = false;
@@ -31,7 +31,6 @@ class cartStore {
 
   constructor() {
     makeObservable(this, {
-      token: observable,
       products: observable,
       authorizationStatus: observable,
       loadError: observable,
@@ -41,6 +40,7 @@ class cartStore {
     });
 
     this.getToken = this.getToken.bind(this);
+    this.fetchProducts = this.fetchProducts.bind(this);
   }
 
   async getToken(email, password) {
@@ -51,9 +51,8 @@ class cartStore {
     try {
       const data = await fetchData(`api/login`, 'POST', null, body);
       runInAction(() => {
-        this.toke = data.token;
+        this.token = data.token;
         this.authorizationStatus = AuthorizationStatus.AUTH;
-        this.fetchProducts();
       });
     } catch (e) {
       runInAction(() => {
