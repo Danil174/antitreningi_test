@@ -109,7 +109,9 @@ module.exports = {
     minimize: isProd,
     minimizer: [
       new CssMinimizerPlugin(),
-      // new TerserPlugin()
+      new TerserPlugin({
+        exclude: /node_modules/,
+      })
     ],
   },
 }

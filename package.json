@@ -36,7 +36,6 @@
     "eslint-plugin-react": "7.21.4",
     "html-webpack-plugin": "4.5.0",
     "mini-css-extract-plugin": "1.0.0",
-    "terser-webpack-plugin": "5.0.0",
     "webpack": "4.44.2",
     "webpack-cli": "3.3.12",
     "webpack-dev-server": "3.11.0"
@@ -49,7 +48,8 @@
     "prop-types": "15.7.2",
     "react": "16.14.0",
     "react-dom": "16.14.0",
-    "react-router-dom": "5.2.0"
+    "react-router-dom": "5.2.0",
+    "terser-webpack-plugin": "^4.2.3"
   },
   "browserslist": "> 0.25%, not dead"
 }
