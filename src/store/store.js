@@ -65,6 +65,7 @@ class cartStore {
     this.deleteProduct = this.deleteProduct.bind(this);
     this.patchProduct = this.patchProduct.bind(this);
     this.setFilterRangeValue = this.setFilterRangeValue.bind(this);
+    this.putCategories = this.putCategories.bind(this);
   }
 
   get filteredProducts() {
@@ -210,13 +211,12 @@ class cartStore {
     }
   }
 
-  async putCategories(array) {
-    const body = JSON.stringify({ array });
+  async putCategories(arr) {
+    const body = JSON.stringify({ arr });
     try {
       const data = await fetchData(`api/categories`, 'PUT', this.token, body);
       runInAction(() => {
-        console.log(data);
-        // this.putProductInStore(data);
+        this.categories = data;
       });
     } catch (e) {
       runInAction(() => {

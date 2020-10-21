@@ -1,44 +1,42 @@
 import React, { useState } from 'react';
 import { Chip } from '@material-ui/core';
 
-const Category = () => {
-  const [chipData, setChipData] = useState([
-    { selected: false, label: 'Еда' },
-    { selected: false, label: 'Одежда' },
-    { selected: false, label: 'Алкоголь' },
-  ]);
-
+const Category = ( { categories, handleChange } ) => {
   const [newCategory, setNewCategory] = useState(``);
 
-  const handleDelete = (chipToDelete) => () => {
-    setChipData((chips) => chips.filter((chip) => chip.label !== chipToDelete.label));
+  const handleDelete = (it) => () => {
+    handleChange(categories.slice().filter(item => item.label !== it.label));
   };
 
-  const handleChipClick = (clickedChip) => () => {
-    setChipData((chips) => chips.map(it => it.label === clickedChip.label ? { ...it, selected: !clickedChip.selected } : it ));
+  const handleChipClick = (clickedItem) => () => {
+    handleChange(categories.map(it => it.label === clickedItem.label ? { ...it, selected: !clickedItem.selected } : it ));
   };
 
   const handleBtnClick = () => {
     if (newCategory !== ``) {
-      setChipData((chips) => [...chips, { selected: false, label: newCategory }]);
+      handleChange([...categories, { selected: false, label: newCategory }]);
       setNewCategory(``);
     }
   };
 
+  if (categories.length === 0) {
+    return <div>Категорий не найдено</div>;
+  }
+
   return (
     <div className="category">
       <ul className="category__list">
-        {chipData.map((chip, i) => {
+        {categories.map((category) => {
           return (
             <li
-              key={`${i}${chip.label}`}
+              key={`${category.label}`}
               className="category__item"
             >
               <Chip
-                label={chip.label}
-                color={chip.selected ? 'secondary' : 'primary'}
-                onDelete={handleDelete(chip)}
-                onClick={handleChipClick(chip)}
+                label={category.label}
+                color={category.selected ? 'secondary' : 'primary'}
+                onDelete={handleDelete(category)}
+                onClick={handleChipClick(category)}
               />
             </li>
           );
