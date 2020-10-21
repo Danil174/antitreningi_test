@@ -65,8 +65,8 @@ const NewProductDialog = inject('myStore')(observer((props) => {
             const data = {
               title: title.value,
               category: category.value,
-              price: price.value,
-              amount: amount.value,
+              price: Number(price.value),
+              amount: Number(amount.value),
             };
             props.myStore.addproduct(data);
             handleClose();

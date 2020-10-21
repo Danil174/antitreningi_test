@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Slider } from '@material-ui/core';
+import PropTypes from "prop-types";
 
 const RangeFilter = ({ maxValue, handleFilterChange }) => {
   const [range, setRange] = React.useState([0, 1]);
@@ -30,6 +31,11 @@ const RangeFilter = ({ maxValue, handleFilterChange }) => {
       <span>до {maxValue} руб.</span>
     </Grid>
   );
+};
+
+RangeFilter.propTypes = {
+  maxValue: PropTypes.number.isRequired,
+  handleFilterChange: PropTypes.func.isRequired,
 };
 
 export default RangeFilter;

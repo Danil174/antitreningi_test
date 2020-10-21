@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Chip } from '@material-ui/core';
+import PropTypes from "prop-types";
 
 const Category = ( { categories, handleChange } ) => {
   const [newCategory, setNewCategory] = useState(``);
@@ -60,6 +61,11 @@ const Category = ( { categories, handleChange } ) => {
       </label>
     </div>
   );
+};
+
+Category.propTypes = {
+  categories: PropTypes.array.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default Category;

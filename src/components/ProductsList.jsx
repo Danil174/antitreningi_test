@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Button } from '@material-ui/core';
+import PropTypes from "prop-types";
 
 const ProductsList = ({ products, deleteProduct, patchProduct }) => {
 
@@ -39,6 +40,12 @@ const ProductsList = ({ products, deleteProduct, patchProduct }) => {
       }
     </Grid>
   );
+};
+
+ProductsList.propTypes = {
+  products: PropTypes.array.isRequired,
+  deleteProduct: PropTypes.func.isRequired,
+  patchProduct: PropTypes.func.isRequired,
 };
 
 export default ProductsList;

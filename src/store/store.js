@@ -82,7 +82,7 @@ class cartStore {
 
     return newArr
       .filter(it => activCategories.includes(it.category))
-      .filter(it => this.filterRange[0] <= Number(it.price) && this.filterRange[1] >= Number(it.price));
+      .filter(it => this.filterRange[0] <= it.price && this.filterRange[1] >= it.price);
   }
 
   get productsCost() {
@@ -107,7 +107,7 @@ class cartStore {
     if (this.products.length === 0) {
       return 0;
     }
-    const priceArr = this.products.map(it => Number(it.price));
+    const priceArr = this.products.map(it => it.price);
     const max = Math.max(...priceArr);
     return max;
   }
