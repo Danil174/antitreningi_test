@@ -69,11 +69,15 @@ class cartStore {
   }
 
   get filteredProducts() {
-    if (this.filterRange[1] === 0) {
-      return this.products;
+    const newArr = this.products.slice();
+    const activCategories = this.categories.slice().filter(it => it.selected).map(it => it.label);
+
+    if (this.filterRange[1] === 0 && activCategories.length === 0) {
+      return newArr;
     }
-    return this.products
-      .slice()
+
+    return newArr
+      .filter(it => activCategories.includes(it.category))
       .filter(it => this.filterRange[0] <= Number(it.price) && this.filterRange[1] >= Number(it.price));
   }
 

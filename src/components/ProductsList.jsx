@@ -24,6 +24,7 @@ const ProductsList = ({ products, deleteProduct, patchProduct }) => {
               className={isBoughtClass}
             >
               <span>{product.title}</span>
+              <span>Категория: {product.category}</span>
               <span>Количество: {product.amount}</span>
               <span>Цена: {product.price} руб.</span>
               <Button onClick={() => patchProduct(product.id)} color="primary" variant="contained" disableElevation>
