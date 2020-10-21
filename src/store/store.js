@@ -164,12 +164,8 @@ class cartStore {
     }
   }
 
-  async addproduct(data) {
-    const serverData = {};
-    for (const [key, value] of data.entries()) {
-      serverData[key] = value;
-    }
-    const body = JSON.stringify(serverData);
+  async addproduct(product) {
+    const body = JSON.stringify(product);
     try {
       const data = await fetchData(`/api/goods`, 'POST', this.token, body);
       runInAction(() => {

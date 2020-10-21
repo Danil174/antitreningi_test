@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   TextField,
@@ -13,12 +13,28 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { inject, observer } from 'mobx-react';
 
+const useInput = (initValue) => {
+  const [value, setValue] = useState(initValue);
+
+  const onChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  return {
+    value,
+    onChange
+  };
+};
+
 const NewProductDialog = inject('myStore')(observer((props) => {
   const [open, setOpen] = useState(false);
-  const [category, setAge] = React.useState('');
-  const formData = useRef(null);
 
   const categoriesArr = props.myStore.categories.map(it => it.label);
+
+  const title = useInput('');
+  const category = useInput('');
+  const price = useInput(1);
+  const amount = useInput(1);
 
   const handleOpen = () => {
     setOpen(true);
@@ -26,10 +42,6 @@ const NewProductDialog = inject('myStore')(observer((props) => {
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
   };
 
   return (
@@ -50,24 +62,29 @@ const NewProductDialog = inject('myStore')(observer((props) => {
           component={'form'}
           onSubmit={(evt) => {
             evt.preventDefault();
-            const data = new FormData(formData.current);
-            data.append('category', 'продукты'); //WIP
+            const data = {
+              title: title.value,
+              category: category.value,
+              price: price.value,
+              amount: amount.value,
+            };
             props.myStore.addproduct(data);
             handleClose();
           }}
-          ref={formData}
         >
           <TextField
             autoFocus
             name="title"
             label="Название"
             type="text"
+            {...title}
             required
           />
           <TextField
             name="price"
             label="Цена"
             type="number"
+            {...price}
             InputProps={{
               inputProps: {
                 min: 1
@@ -79,6 +96,7 @@ const NewProductDialog = inject('myStore')(observer((props) => {
             name="amount"
             label="Количество"
             type="number"
+            {...amount}
             InputProps={{
               inputProps: {
                 min: 1
@@ -91,9 +109,7 @@ const NewProductDialog = inject('myStore')(observer((props) => {
             <Select
               labelId="category"
               name="category"
-              value={category}
-              onChange={handleChange}
-              required
+              {...category}
             >
               {categoriesArr.map(it => {
                 return <MenuItem value={it} key={it}>{it}</MenuItem>;
