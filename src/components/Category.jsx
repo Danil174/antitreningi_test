@@ -25,11 +25,12 @@ const Category = ( { categories, handleChange } ) => {
 
   return (
     <div className="category">
+      <b>Фильтр по категории:</b>
       <ul className="category__list">
-        {categories.map((category) => {
+        {categories.map((category, i) => {
           return (
             <li
-              key={`${category.label}`}
+              key={`${category.label}${i}`}
               className="category__item"
             >
               <Chip

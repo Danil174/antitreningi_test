@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Slider } from '@material-ui/core';
 
-const RangeFilter = ({maxValue, handleFilterChange }) => {
+const RangeFilter = ({ maxValue, handleFilterChange }) => {
   const [range, setRange] = React.useState([0, 1]);
   const handleValueChange = (evt, value) => {
     setRange(value);
@@ -13,7 +13,7 @@ const RangeFilter = ({maxValue, handleFilterChange }) => {
   return (
     <Grid
       container
-      justify='center'
+      justify='space-around'
       alignItems='center'
     >
       <b>Фильтр по цене:</b>
