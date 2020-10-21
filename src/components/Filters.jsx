@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Grid } from '@material-ui/core';
+import { Grid, Checkbox, FormControlLabel } from '@material-ui/core';
 
 import RangeFilter from "./RangeFilter";
 import Category from "./Category";
@@ -16,6 +16,15 @@ const Filters = inject('myStore')(observer(({ myStore }) => {
       alignItems="center"
       className="filters"
     >
+      <FormControlLabel
+        control={
+          <Checkbox
+            onChange={myStore.setShowFilters}
+            color="primary"
+          />
+        }
+        label="Применить фильтры"
+      />
       <RangeFilter
         maxValue={myStore.maxPrice}
         handleFilterChange={myStore.setFilterRangeValue}

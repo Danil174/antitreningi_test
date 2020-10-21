@@ -30,6 +30,7 @@ const costReducer = (items) => {
 
 
 class cartStore {
+  showFilters = false;
   token = null;
   products = [];
   categories = [];
@@ -41,6 +42,7 @@ class cartStore {
 
   constructor() {
     makeObservable(this, {
+      showFilters: observable,
       products: observable,
       categories: observable,
       authorizationStatus: observable,
@@ -54,10 +56,11 @@ class cartStore {
       fetchCategories: action,
       putCategories: action,
       setFilterRangeValue: action,
+      setShowFilters: action,
       productsCost: computed,
       boughtProductsCost: computed,
       filteredProducts: computed,
-      maxPrice: computed
+      maxPrice: computed,
     });
 
     this.getToken = this.getToken.bind(this);
@@ -66,15 +69,16 @@ class cartStore {
     this.patchProduct = this.patchProduct.bind(this);
     this.setFilterRangeValue = this.setFilterRangeValue.bind(this);
     this.putCategories = this.putCategories.bind(this);
+    this.setShowFilters = this.setShowFilters.bind(this);
   }
 
   get filteredProducts() {
+    if (!this.showFilters) {
+      return this.products;
+    }
+
     const newArr = this.products.slice();
     const activCategories = this.categories.slice().filter(it => it.selected).map(it => it.label);
-
-    if (this.filterRange[1] === 0 && activCategories.length === 0) {
-      return newArr;
-    }
 
     return newArr
       .filter(it => activCategories.includes(it.category))
@@ -106,6 +110,10 @@ class cartStore {
     const priceArr = this.products.map(it => Number(it.price));
     const max = Math.max(...priceArr);
     return max;
+  }
+
+  setShowFilters() {
+    this.showFilters = !this.showFilters;
   }
 
   setFilterRangeValue(range) {
